@@ -1,0 +1,16 @@
+# Core engine + API + TUI (works fully in the default synthetic data mode).
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+pandas>=2.0
+numpy>=1.24
+httpx>=0.27
+websockets>=12.0
+textual>=0.60
+rich>=13.0
+
+# Real market data (optional — only needed for DATA_MODE=yfinance / ccxt).
+# Uncomment to enable:
+# yfinance>=0.2.40
+# ccxt>=4.2
