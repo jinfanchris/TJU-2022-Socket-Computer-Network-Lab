@@ -10,6 +10,9 @@ websockets>=12.0
 textual>=0.60
 rich>=13.0
 
+# Tests.
+pytest>=8.0
+
 # Real market data (optional — only needed for DATA_MODE=yfinance / ccxt).
 # Uncomment to enable:
 # yfinance>=0.2.40

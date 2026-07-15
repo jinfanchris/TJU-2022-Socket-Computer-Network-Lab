@@ -7,12 +7,19 @@ volume are synthesized around each close so candlesticks look realistic.
 """
 from __future__ import annotations
 
+import zlib
 from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
 
 from .base import DataSource, _normalize
+
+
+def _stable_hash(text: str) -> int:
+    """Process-independent hash. Built-in hash() is randomized per run
+    (PYTHONHASHSEED), which would make the "fixed seed" non-reproducible."""
+    return zlib.crc32(text.encode("utf-8"))
 
 # A few named "instruments" with different drift/vol so the UI has variety.
 _PRESETS: dict[str, dict] = {
@@ -47,7 +54,7 @@ class SyntheticDataSource(DataSource):
         dt = _TIMEFRAME_DAYS.get(timeframe, 1) / 252.0  # trading-year fraction
 
         # Deterministic per-symbol seed.
-        rng = np.random.default_rng(self._seed + abs(hash(symbol.upper())) % 10_000)
+        rng = np.random.default_rng(self._seed + _stable_hash(symbol.upper()) % 10_000)
 
         z = rng.standard_normal(n)
         mu, sigma, s0 = preset["mu"], preset["sigma"], preset["start"]

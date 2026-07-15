@@ -30,6 +30,8 @@
 
 ## 快速开始
 
+> 装了 `make` 的话最省事：`make install` 装依赖，`make backend` / `make web` / `make tui` 分别启动，`make test` 跑测试。完整命令见下方「Makefile 命令」。手动步骤如下：
+
 ### 1) 后端引擎（必需）
 
 ```bash
@@ -61,6 +63,32 @@ python -m tui.app --api http://localhost:8000
 ```
 
 快捷键：`r` 运行回测 · `l` 模拟实盘 · `q` 退出。
+
+## Makefile 命令
+
+在 `quant-poc/` 目录下运行 `make help` 查看全部命令：
+
+| 命令 | 作用 |
+|------|------|
+| `make install` | 安装后端(Python)+ 前端(npm)依赖 |
+| `make install-data` | 安装真实行情可选依赖(yfinance、ccxt) |
+| `make backend` | 启动 FastAPI 引擎(REST + WebSocket) |
+| `make web` | 启动 React 网页开发服务器(:5173) |
+| `make tui` | 启动终端界面(需后端已运行) |
+| `make test` | 后端端到端测试(pytest，合成数据，无需联网) |
+| `make test-web` | 前端类型检查 + 构建(tsc + vite build) |
+| `make test-all` | 后端 + 前端全部测试 |
+| `make sample-csv` | 重新生成内置示例 CSV |
+| `make clean` | 清理缓存/构建产物 |
+
+可用变量覆盖，例如换数据源和端口：
+
+```bash
+make backend DATA=yfinance PORT=9000
+```
+
+`make test` 运行 `tests/test_smoke.py`，覆盖：每个指标/因子/绩效都带解释、
+回测产出四项绩效与成交、REST 各端点、`/ws/replay` 流式帧——全部用默认合成数据，离线即可跑。
 
 ## 切换到真实数据
 
